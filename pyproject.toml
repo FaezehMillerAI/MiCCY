@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepeyenet-kg-reporting"
+version = "0.1.0"
+description = "Modular multimodal retinal report generation with knowledge-guided reasoning for DeepEyeNet"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "OpenAI Codex"}]
+dependencies = [
+  "matplotlib>=3.8",
+  "networkx>=3.2",
+  "numpy>=1.26",
+  "pandas>=2.2",
+  "Pillow>=10.2",
+  "PyYAML>=6.0",
+  "scikit-learn>=1.4",
+  "seaborn>=0.13",
+  "torch>=2.2",
+  "torchvision>=0.17",
+  "tqdm>=4.66"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
