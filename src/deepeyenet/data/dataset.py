@@ -46,16 +46,44 @@ def load_split(metadata_dir: str | Path, filename: str) -> list[SampleRecord]:
     if path.suffix.lower() == ".json":
         payload = load_json(path)
         records = []
-        for image_path, item in payload.items():
-            records.append(
-                SampleRecord(
-                    image_path=image_path,
-                    keywords=parse_keywords(item.get("Keywords", [])),
-                    clinical_description=str(item.get("clinical-description", "")),
-                    report_text=str(item.get("report_text", "")),
+        if isinstance(payload, dict):
+            for image_path, item in payload.items():
+                records.append(
+                    SampleRecord(
+                        image_path=image_path,
+                        keywords=parse_keywords(item.get("Keywords", [])),
+                        clinical_description=str(item.get("clinical-description", "")),
+                        report_text=str(item.get("report_text", "")),
+                    )
                 )
-            )
-        return records
+            return records
+        if isinstance(payload, list):
+            image_path_keys = ["image_path", "path", "image", "image_file", "file_name", "filename"]
+            for idx, item in enumerate(payload):
+                if not isinstance(item, dict):
+                    raise TypeError(f"Unsupported JSON entry type at index {idx}: {type(item)!r}")
+                image_path = ""
+                for key in image_path_keys:
+                    if key in item and item[key]:
+                        image_path = str(item[key])
+                        break
+                if not image_path:
+                    raise KeyError(
+                        "Could not find an image path field in JSON list entry. "
+                        f"Tried keys: {image_path_keys}"
+                    )
+                records.append(
+                    SampleRecord(
+                        image_path=image_path,
+                        keywords=parse_keywords(item.get("Keywords", item.get("keywords", []))),
+                        clinical_description=str(
+                            item.get("clinical-description", item.get("clinical_description", ""))
+                        ),
+                        report_text=str(item.get("report_text", item.get("report", ""))),
+                    )
+                )
+            return records
+        raise TypeError(f"Unsupported JSON top-level type in {path}: {type(payload)!r}")
     frame = pd.read_csv(path)
     return [
         SampleRecord(
