@@ -1,0 +1,100 @@
+[
+  {
+    "id": "case_pneumonia",
+    "title": "Dyspnea and Fever",
+    "dataset": "IU X-ray",
+    "indication": "Shortness of breath, fever, productive cough",
+    "visual_summary": "Right lower lobe opacity with mild right pleural effusion. Cardiac silhouette remains normal.",
+    "accepted_report": "Right lower lobe opacity consistent with pneumonia. Mild right-sided pleural effusion is present. Cardiac silhouette is normal. No pneumothorax.",
+    "baseline_report": "No acute cardiopulmonary process. Lungs clear bilaterally. Possible left-sided pleural effusion. Cardiomegaly noted.",
+    "nodes": [
+      {"id": "indication", "label": "Dyspnea + Fever", "type": "Indication"},
+      {"id": "pneumonia", "label": "Pneumonia", "type": "Disease"},
+      {"id": "effusion", "label": "Pleural Effusion", "type": "Phenotype"},
+      {"id": "consolidation", "label": "Consolidation (RLL)", "type": "Phenotype"},
+      {"id": "heart", "label": "Heart Size (Normal)", "type": "Anatomy"}
+    ],
+    "edges": [
+      {"source": "indication", "target": "pneumonia", "relation": "Triggers", "weight": 0.88},
+      {"source": "pneumonia", "target": "effusion", "relation": "Associated With", "weight": 0.82},
+      {"source": "pneumonia", "target": "consolidation", "relation": "Presents As", "weight": 0.91},
+      {"source": "consolidation", "target": "heart", "relation": "Adjacent To", "weight": 0.79}
+    ],
+    "claims": [
+      {"text": "Right lower lobe opacity", "entailment": 0.96, "grounding": 0.94, "ltn": 0.92, "hallucination_risk": 0.05, "reason": "Visually and graph supported"},
+      {"text": "Pneumonia", "entailment": 0.90, "grounding": 0.82, "ltn": 0.88, "hallucination_risk": 0.07, "reason": "Consistent with indication and subgraph"},
+      {"text": "Right-sided pleural effusion", "entailment": 0.84, "grounding": 0.76, "ltn": 0.81, "hallucination_risk": 0.14, "reason": "Supported by subgraph and image evidence"},
+      {"text": "Cardiac silhouette normal", "entailment": 0.87, "grounding": 0.71, "ltn": 0.86, "hallucination_risk": 0.11, "reason": "No contradictory graph path"},
+      {"text": "No pneumothorax", "entailment": 0.78, "grounding": 0.63, "ltn": 0.74, "hallucination_risk": 0.20, "reason": "Accepted under thresholded gate"},
+      {"text": "Small parapneumonic effusion", "entailment": 0.67, "grounding": 0.41, "ltn": 0.66, "hallucination_risk": 0.44, "reason": "Borderline but still accepted at default thresholds"},
+      {"text": "Bibasal atelectatic change", "entailment": 0.59, "grounding": 0.32, "ltn": 0.61, "hallucination_risk": 0.49, "reason": "Threshold-sensitive weak support"},
+      {"text": "Cardiomegaly", "entailment": 0.23, "grounding": 0.18, "ltn": 0.21, "hallucination_risk": 0.84, "reason": "Co-occurrence bias without evidence"},
+      {"text": "Clear bilaterally", "entailment": 0.19, "grounding": 0.12, "ltn": 0.18, "hallucination_risk": 0.92, "reason": "Contradicts visible opacity"},
+      {"text": "Left-sided pleural effusion", "entailment": 0.31, "grounding": 0.27, "ltn": 0.31, "hallucination_risk": 0.78, "reason": "Wrong laterality"},
+      {"text": "Trace left pleural blunting", "entailment": 0.46, "grounding": 0.29, "ltn": 0.52, "hallucination_risk": 0.53, "reason": "Almost plausible but rejected at default gate"}
+    ]
+  },
+  {
+    "id": "case_cardiac",
+    "title": "Chest Pain and Orthopnea",
+    "dataset": "MIMIC-CXR",
+    "indication": "Chest pain, orthopnea, lower extremity swelling",
+    "visual_summary": "Cardiomegaly with bilateral perihilar opacities and small pleural effusions, favoring pulmonary edema.",
+    "accepted_report": "Cardiomegaly with bilateral perihilar opacities, most compatible with pulmonary edema. Small bilateral pleural effusions are present. No focal pneumothorax.",
+    "baseline_report": "No acute disease. Focal right lower lobe pneumonia. Pleural effusions absent. Heart size normal.",
+    "nodes": [
+      {"id": "indication", "label": "Chest pain + Orthopnea", "type": "Indication"},
+      {"id": "heart_failure", "label": "Heart Failure", "type": "Disease"},
+      {"id": "cardiomegaly", "label": "Cardiomegaly", "type": "Phenotype"},
+      {"id": "edema", "label": "Pulmonary Edema", "type": "Phenotype"},
+      {"id": "effusions", "label": "Pleural Effusions", "type": "Phenotype"}
+    ],
+    "edges": [
+      {"source": "indication", "target": "heart_failure", "relation": "Suggests", "weight": 0.84},
+      {"source": "heart_failure", "target": "cardiomegaly", "relation": "Associated With", "weight": 0.89},
+      {"source": "heart_failure", "target": "edema", "relation": "Causes", "weight": 0.93},
+      {"source": "edema", "target": "effusions", "relation": "Co-occurs With", "weight": 0.76}
+    ],
+    "claims": [
+      {"text": "Cardiomegaly", "entailment": 0.93, "grounding": 0.88, "ltn": 0.90, "hallucination_risk": 0.05, "reason": "Strongly grounded finding"},
+      {"text": "Pulmonary edema", "entailment": 0.89, "grounding": 0.83, "ltn": 0.92, "hallucination_risk": 0.07, "reason": "Causally supported by graph"},
+      {"text": "Small bilateral pleural effusions", "entailment": 0.82, "grounding": 0.74, "ltn": 0.79, "hallucination_risk": 0.14, "reason": "Accepted support chain"},
+      {"text": "No focal pneumothorax", "entailment": 0.77, "grounding": 0.66, "ltn": 0.75, "hallucination_risk": 0.16, "reason": "No contradicting evidence"},
+      {"text": "Mild vascular congestion", "entailment": 0.68, "grounding": 0.39, "ltn": 0.69, "hallucination_risk": 0.43, "reason": "Weakly supported and threshold-sensitive"},
+      {"text": "Trace bibasal interstitial prominence", "entailment": 0.61, "grounding": 0.34, "ltn": 0.63, "hallucination_risk": 0.47, "reason": "Can flip with stricter thresholds"},
+      {"text": "Focal right lower lobe pneumonia", "entailment": 0.28, "grounding": 0.24, "ltn": 0.34, "hallucination_risk": 0.71, "reason": "Template leakage from common baseline"},
+      {"text": "Heart size normal", "entailment": 0.09, "grounding": 0.11, "ltn": 0.16, "hallucination_risk": 0.94, "reason": "Direct conflict with image evidence"},
+      {"text": "Questionable right basilar infiltrate", "entailment": 0.44, "grounding": 0.28, "ltn": 0.49, "hallucination_risk": 0.57, "reason": "Borderline rejected candidate"}
+    ]
+  },
+  {
+    "id": "case_normal",
+    "title": "Routine Follow-up",
+    "dataset": "IU X-ray",
+    "indication": "Routine follow-up, cough resolved",
+    "visual_summary": "Cardiomediastinal silhouette is stable. Lungs are clear without focal consolidation, pleural effusion, or pneumothorax.",
+    "accepted_report": "Stable cardiomediastinal silhouette. Lungs are clear. No pleural effusion or pneumothorax.",
+    "baseline_report": "Mild bibasal infiltrates with possible pleural effusion. Cardiomegaly cannot be excluded.",
+    "nodes": [
+      {"id": "indication", "label": "Resolved cough", "type": "Indication"},
+      {"id": "normal_lung", "label": "Clear Lungs", "type": "Phenotype"},
+      {"id": "stable_heart", "label": "Stable Cardiomediastinum", "type": "Anatomy"},
+      {"id": "no_effusion", "label": "No Pleural Effusion", "type": "Phenotype"}
+    ],
+    "edges": [
+      {"source": "indication", "target": "normal_lung", "relation": "Supports", "weight": 0.75},
+      {"source": "normal_lung", "target": "no_effusion", "relation": "Consistent With", "weight": 0.81},
+      {"source": "normal_lung", "target": "stable_heart", "relation": "Adjacent To", "weight": 0.67}
+    ],
+    "claims": [
+      {"text": "Lungs are clear", "entailment": 0.94, "grounding": 0.85, "ltn": 0.83, "hallucination_risk": 0.08, "reason": "Normal study confirmed"},
+      {"text": "Stable cardiomediastinal silhouette", "entailment": 0.86, "grounding": 0.73, "ltn": 0.79, "hallucination_risk": 0.12, "reason": "Accepted normal anatomy"},
+      {"text": "No pleural effusion", "entailment": 0.91, "grounding": 0.78, "ltn": 0.82, "hallucination_risk": 0.09, "reason": "No graph contradiction"},
+      {"text": "Minimal linear left base scar", "entailment": 0.64, "grounding": 0.36, "ltn": 0.68, "hallucination_risk": 0.45, "reason": "Borderline normal-follow-up phrase"},
+      {"text": "Mild chronic hyperinflation", "entailment": 0.57, "grounding": 0.31, "ltn": 0.60, "hallucination_risk": 0.48, "reason": "Threshold-sensitive optional finding"},
+      {"text": "Bibasal infiltrates", "entailment": 0.14, "grounding": 0.16, "ltn": 0.24, "hallucination_risk": 0.89, "reason": "Unsupported abnormal template"},
+      {"text": "Cardiomegaly cannot be excluded", "entailment": 0.21, "grounding": 0.19, "ltn": 0.28, "hallucination_risk": 0.81, "reason": "Weak grounding only"},
+      {"text": "Trace bibasal haziness", "entailment": 0.47, "grounding": 0.28, "ltn": 0.51, "hallucination_risk": 0.52, "reason": "Near-threshold rejected phrase"}
+    ]
+  }
+]

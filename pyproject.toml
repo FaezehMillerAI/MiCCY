@@ -18,6 +18,7 @@ dependencies = [
   "PyYAML>=6.0",
   "scikit-learn>=1.4",
   "seaborn>=0.13",
+  "streamlit>=1.35",
   "torch>=2.2",
   "torchvision>=0.17",
   "tqdm>=4.66"

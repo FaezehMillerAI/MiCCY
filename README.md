@@ -4,6 +4,24 @@ A modular, GitHub-friendly implementation of an explainable multimodal report-ge
 
 This repository is a practical adaptation of the methodology implied by the paper `Explainable Multimodal Chest X-Ray Report Generation with PrimeKG Guided Reasoning`, but retargeted to ophthalmology and the DeepEyeNet schema you described.
 
+## Paper demo
+
+This repository also includes a standalone research demo for the manuscript `Towards Explainable Graph-Verified Neuro-symbolic Chest X-Ray Report Generation`.
+
+Run it with:
+
+```bash
+pip install -r requirements.txt
+streamlit run demo/paper_demo_app.py
+```
+
+The demo includes:
+
+- an interactive token-verification walkthrough
+- a temporal subgraph visualization
+- an ablation-results dashboard
+- manuscript figures packaged for presentation
+
 ## What is implemented
 
 - A multimodal model that fuses retinal images, clinical-description text, and a keyword knowledge graph.
