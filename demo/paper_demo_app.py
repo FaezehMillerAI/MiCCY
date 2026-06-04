@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import json
 from pathlib import Path
 
@@ -13,8 +14,10 @@ ROOT = Path(__file__).resolve().parent
 ASSETS = ROOT / "assets"
 DATA = ROOT / "data"
 
-PAPER_TITLE = "Towards Explainable Graph-Verified Neuro-symbolic Chest X-Ray Report Generation"
+PAPER_TITLE = "Towards Explainable Graph-Verfied Neuro-symbolic Chest X-Ray Report Generation"
 SHORT_TITLE = "Nesy-Gen"
+AUTHORS = "Faezeh Safari, Hang Dong, Zeyu Fu, Aline Villavicencio"
+AFFILIATION = "University of Exeter"
 
 NODE_COLORS = {
     "Indication": "#d8e7ff",
@@ -74,10 +77,34 @@ def inject_css() -> None:
             font-weight: 800;
             margin-bottom: 0.5rem;
         }
+        .hero-authors {
+            font-size: 1rem;
+            color: #bfdbfe;
+            margin-top: 0.7rem;
+            font-weight: 600;
+        }
         .hero-subtitle {
             font-size: 1rem;
             color: #dbeafe;
             max-width: 900px;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 220px;
+            gap: 1rem;
+            align-items: center;
+        }
+        .hero-logo-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-logo {
+            width: 100%;
+            max-width: 210px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 18px;
+            padding: 0.6rem 0.8rem;
         }
         .badge-row {
             display: flex;
@@ -278,16 +305,26 @@ def threshold_sensitivity(case: dict, beta: float, delta: float, epsilon: float)
 
 
 def render_header(subtitle: str) -> None:
+    logo_path = ASSETS / "university_of_exeter_logo.png"
+    logo_b64 = base64.b64encode(logo_path.read_bytes()).decode("ascii")
     st.markdown(
         f"""
         <div class="hero-card">
-            <div class="hero-title">{SHORT_TITLE}: Conference Demo</div>
-            <div class="hero-subtitle">{PAPER_TITLE}<br>{subtitle}</div>
+            <div class="hero-grid">
+                <div>
+                    <div class="hero-title">{PAPER_TITLE}</div>
+                    <div class="hero-subtitle">{subtitle}</div>
+                    <div class="hero-authors">{AUTHORS}<br>{AFFILIATION}</div>
+                </div>
+                <div class="hero-logo-wrap">
+                    <img class="hero-logo" src="data:image/png;base64,{logo_b64}" alt="University of Exeter logo">
+                </div>
+            </div>
             <div class="badge-row">
+                <div class="badge">{SHORT_TITLE}</div>
                 <div class="badge">Ante-hoc verification</div>
                 <div class="badge">PrimeKG-guided reasoning</div>
                 <div class="badge">Hallucination suppression</div>
-                <div class="badge">Conference-ready walkthrough</div>
             </div>
         </div>
         """,
@@ -451,7 +488,6 @@ def render_results() -> None:
 
     with right:
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.subheader("Results summary")
         st.markdown(
             """
             - `VECA` improves alignment between the indication and the image evidence.
